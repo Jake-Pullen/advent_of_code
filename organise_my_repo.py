@@ -29,4 +29,10 @@ for i in range(1, 26):
     
     # Create the solution file
     with open(solution_file_path, "w") as file:
-        file.write("import os\n\n")
+        file.write(f"""import os
+
+with open('{input_file_path}', 'r') as file:
+    input = file.read()
+
+print(input)
+""")
