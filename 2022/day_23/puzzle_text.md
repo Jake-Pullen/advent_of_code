@@ -1,0 +1,1 @@
+# Day 23 Puzzle Text.
