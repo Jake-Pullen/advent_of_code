@@ -1,7 +1,7 @@
 import os
 
 # Define the base directory where you want to create the folders
-base_dir = 'advent_of_code_2023'
+base_dir = 'advent_of_code'
 
 # Loop over the range 1 to 25 (inclusive)
 for i in range(2, 26):
