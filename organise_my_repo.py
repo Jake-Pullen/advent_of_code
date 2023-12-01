@@ -5,6 +5,13 @@ base_dir = 'advent_of_code'
 current_year = datetime.now().year
 
 def create_advent_year(year=current_year):
+    '''Creates the folders for the advent of code year.
+if no year is specified, the current year is used.
+    Args:
+        year (int): The year for which to create the folders.
+    Returns:
+        None
+'''
     # Loop over the range 1 to 25 (inclusive)
     for i in range(1, 26):
         # Construct the folder name
@@ -48,4 +55,4 @@ with open(r'{input_file_path}', 'r') as file:
 print(input)
 """)
 
-create_advent_year(2022)
+create_advent_year()
