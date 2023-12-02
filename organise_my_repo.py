@@ -13,7 +13,7 @@ if no year is specified, the current year is used.
         None
 '''
     # Loop over the range 1 to 25 (inclusive)
-    for i in range(1, 26):
+    for i in range(3, 26):
         # Construct the folder name
         folder_name = f"day_{i}"
 

@@ -1,6 +1,6 @@
 import os
 
-with open('advent_of_code_2023\day_14\input.txt', 'r') as file:
+with open(r'advent_of_code\2023\day_14\input.txt', 'r') as file:
     input = file.read()
 
 print(input)
