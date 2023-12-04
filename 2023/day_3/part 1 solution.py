@@ -1,5 +1,5 @@
 # with open(r'advent_of_code\2023\day_3\input.txt', 'r') as file:
-#     input = file.read()
+#     input = file.readlines()
 
 # print(input)
 
@@ -14,19 +14,36 @@ test_input = '''467..114..
 ...$.*....
 .664.598..'''
 
+## remove when not test 
 input = test_input
+## remove when not test 
 
-# find every special character in the input
-# at the special character, look at every space around it (including diagonals)
-# if there is a number, add it to the list of numbers
-# at the end, add up all the numbers in the list
+def get_directions(x_offset, y_offset):
+    for y in range(-1, 2):
+        for x in range(-1, 2):
+            yield x + x_offset, y + y_offset
 
-# find every special character in the input
-special_characters = ['$', '*', '+', '#']
-special_character_positions = []
-for row_index, row in enumerate(input.split('\n')):
-    for column_index, character in enumerate(row):
-        if character in special_characters:
-            special_character_positions.append((row_index, column_index))
+valid_map = [[0 for _ in range(len(input[0]))] for _ in range(len(input))]
 
-print(special_character_positions)
+for i, row in enumerate(input[1:-1]):
+    for j, char in enumerate(row[1:-1]):
+        if not (char == "." or char.isnumeric()):
+            for x, y in get_directions(j + 1, i + 1):
+                valid_map[y][x] = 1
+
+current_number = '0'
+num_valid = False
+sm = 0
+
+for i, row in enumerate(input):
+    for j, char in enumerate(row):
+        if char.isnumeric():
+            num_valid = num_valid or valid_map[i][j]
+            current_number += char
+        else:
+            if num_valid:
+                sm += int(current_number)
+            num_valid = False
+            current_number = '0'
+
+print(sm)
