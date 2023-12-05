@@ -14,14 +14,14 @@ Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11'''
 #input = test_input.split('\n')
 points = 0
 for line in input:
-    print(line)
+    #print(line)
     winning_numbers = []
     my_numbers = []
     line = line.split('|')
     winning_numbers = line[0].split(':')[1].split()
     my_numbers = line[1].split()
-    print(f'my numbers are: {my_numbers}')
-    print(f'winning numbers are: {winning_numbers}')
+    #print(f'my numbers are: {my_numbers}')
+    #print(f'winning numbers are: {winning_numbers}')
     wins = 0
     for number in my_numbers:
         if number in winning_numbers:
@@ -30,9 +30,9 @@ for line in input:
             pass 
     if wins > 0:
         add_to_points = 2**wins/2
-        print(f'add to points: {add_to_points}')
+        #print(f'add to points: {add_to_points}')
         points += add_to_points
     else:
         pass
-    print(f'wins: {wins} & points: {points}')
+    #print(f'wins: {wins} & points: {points}')
 print(f'points: {points}')
