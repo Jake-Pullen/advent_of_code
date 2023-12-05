@@ -49,7 +49,7 @@ def map_range(rng, map):
     # Initialize a list with the input range
     ranges = [rng]
     # Initialize an empty list to store the result ranges
-    res = []
+    result_range = []
 
     # Process each range in the list
     while ranges:
@@ -66,7 +66,7 @@ def map_range(rng, map):
                 # Add the remaining part of the current range to the list
                 ranges.append((start, src[0] - 1))
                 # Add the mapped range to the result
-                res.append((src[0] + delta, end + delta))
+                result_range.append((src[0] + delta, end + delta))
 
             # Case 2: The start of the current range is within the source range
             elif src[0] <= start <= src[1] < end:
@@ -74,13 +74,13 @@ def map_range(rng, map):
                 # Add the remaining part of the current range to the list
                 ranges.append((src[1] + 1, end))
                 # Add the mapped range to the result
-                res.append((start + delta, src[1] + delta))
+                result_range.append((start + delta, src[1] + delta))
 
             # Case 3: The current range is entirely within the source range
             elif src[0] <= start <= end <= src[1]:
                 matched = True
                 # Add the mapped range to the result
-                res.append((start + delta, end + delta))
+                result_range.append((start + delta, end + delta))
 
             # Case 4: The current range entirely contains the source range
             elif start < src[0] <= src[1] < end:
@@ -89,16 +89,16 @@ def map_range(rng, map):
                 ranges.append((start, src[0] - 1))
                 ranges.append((src[1] + 1, end))
                 # Add the mapped range to the result
-                res.append((src[0] + delta, src[1] + delta))
+                result_range.append((src[0] + delta, src[1] + delta))
 
         # If no match was found in the map, add the current range to the result
         if not matched:
-            res.append(rng)
+            result_range.append(rng)
 
     # Sort the result ranges
-    res.sort()
+    result_range.sort()
 
-    return res
+    return result_range
 
 
 #seeds, maps = data
