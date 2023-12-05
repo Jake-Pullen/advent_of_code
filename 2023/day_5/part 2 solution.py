@@ -4,78 +4,132 @@ with open(r'advent_of_code\2023\day_5\input.txt', 'r') as file:
 with open(r'advent_of_code\2023\day_5\test_input.txt', 'r') as file:
     test_input = file.readlines()
 
-#input = test_input
+# input = test_input
 
 # print(input)
 
-# big fat read me note 
-# big fat read me note 
-# big fat read me note 
-# this has a VERY LONG run time due to looping through what is probably millions of numbers
-# JP to come back later and try to optimize this
-# big fat read me note 
-# big fat read me note 
-# big fat read me note 
+lines = [line.strip('\r\n') for line in input]
 
-# find the seed numbers
 seed_numbers = input[0].split(':')[1].strip().split(' ')
-#print(seed_numbers)
+seeds = [int(num) for num in seed_numbers]
 
-#first we need to split the seed map into lists of 2 numbers
-seed_map = []
-for i in range(0, len(seed_numbers), 2):
-    seed_map.append(seed_numbers[i:i+2])
-#print(seed_map)
+maps = {}
+for line in lines[1:]:
+    if line.endswith(' map:'):
+        k = line.split()[0].split('-')
+        k = (k[0], k[2])
+        maps[k] = map = []
+    elif line:
+        # Split the line into parts
+        parts = line.split()
 
-# find the instructions
-line_seed_to_soil_map = input.index('seed-to-soil map:\n')
-line_soil_to_fertilizer_map = input.index('soil-to-fertilizer map:\n')
-line_fertilizer_to_water_map = input.index('fertilizer-to-water map:\n')
-line_water_to_light_map = input.index('water-to-light map:\n')
-line_light_to_temperature_map = input.index('light-to-temperature map:\n')
-line_temperature_to_humidity_map = input.index('temperature-to-humidity map:\n')
-line_humidity_to_location_map = input.index('humidity-to-location map:\n')
+        # Convert each part to an integer
+        int_parts = [int(part) for part in parts]
 
-# get the instructions for each map
-seed_to_soil_map_instructions = input[line_seed_to_soil_map+1:line_soil_to_fertilizer_map]
-soil_to_fertilizer_map_instructions = input[line_soil_to_fertilizer_map+1:line_fertilizer_to_water_map]
-fertilizer_to_water_map_instructions = input[line_fertilizer_to_water_map+1:line_water_to_light_map]
-water_to_light_map_instructions = input[line_water_to_light_map+1:line_light_to_temperature_map]
-light_to_temperature_map_instructions = input[line_light_to_temperature_map+1:line_temperature_to_humidity_map]
-temperature_to_humidity_map_instructions = input[line_temperature_to_humidity_map+1:line_humidity_to_location_map]
-humidity_to_location_map_instructions = input[line_humidity_to_location_map+1:]
+        # Create a tuple from the list of integer parts
+        x = tuple(int_parts)
 
-def map_value(value, instructions):
-    for instruction in instructions:
-        instruction = instruction.strip()  # remove newline character
-        if instruction:  # check if instruction is not empty
-            destination_start, source_start, length = map(int, instruction.split())
-            if source_start <= value < source_start + length:
-                return destination_start + (value - source_start)
-    return value  # if value is not in any range, it maps to itself
+        # Calculate the start and end of the range
+        range_start = x[1]
+        range_end = x[1] + x[2] - 1
+
+        # Calculate the mapped start of the range
+        mapped_start = x[0] - x[1]
+
+        # Create a tuple representing the range and its mapped start
+        range_tuple = ((range_start, range_end), mapped_start)
+
+        # Append the tuple to the map
+        map.append(range_tuple)
+for map in maps.values():
+    map.sort()
 
 
-# Initialize the smallest location to a large number
-smallest_location = float('inf')
+def map_range(rng, map):
+    # Initialize a list with the input range
+    ranges = [rng]
+    # Initialize an empty list to store the result ranges
+    res = []
 
-for seed in seed_map:
-    start = int(seed[0])
-    count = int(seed[1])
-    for seed_number in range(start, start + count):
-        soil = map_value(seed_number, seed_to_soil_map_instructions)
-        fertilizer = map_value(soil, soil_to_fertilizer_map_instructions)
-        water = map_value(fertilizer, fertilizer_to_water_map_instructions)
-        light = map_value(water, water_to_light_map_instructions)
-        temperature = map_value(light, light_to_temperature_map_instructions)
-        humidity = map_value(temperature, temperature_to_humidity_map_instructions)
-        location = map_value(humidity, humidity_to_location_map_instructions)
-        
-        # Update smallest_location if a smaller location is found
-        if location < smallest_location:
-            smallest_location = location
-            print(smallest_location)
+    # Process each range in the list
+    while ranges:
+        # Flag to check if a match was found in the map
+        matched = False
+        # Get the current range
+        start, end = rng = ranges.pop()
 
-# Print the smallest location
-print(f'answer: {smallest_location}')
+        # Check each entry in the map
+        for src, delta in map:
+            # Case 1: The end of the current range is within the source range
+            if start < src[0] <= end <= src[1]:
+                matched = True
+                # Add the remaining part of the current range to the list
+                ranges.append((start, src[0] - 1))
+                # Add the mapped range to the result
+                res.append((src[0] + delta, end + delta))
+
+            # Case 2: The start of the current range is within the source range
+            elif src[0] <= start <= src[1] < end:
+                matched = True
+                # Add the remaining part of the current range to the list
+                ranges.append((src[1] + 1, end))
+                # Add the mapped range to the result
+                res.append((start + delta, src[1] + delta))
+
+            # Case 3: The current range is entirely within the source range
+            elif src[0] <= start <= end <= src[1]:
+                matched = True
+                # Add the mapped range to the result
+                res.append((start + delta, end + delta))
+
+            # Case 4: The current range entirely contains the source range
+            elif start < src[0] <= src[1] < end:
+                matched = True
+                # Add the parts of the current range outside the source range to the list
+                ranges.append((start, src[0] - 1))
+                ranges.append((src[1] + 1, end))
+                # Add the mapped range to the result
+                res.append((src[0] + delta, src[1] + delta))
+
+        # If no match was found in the map, add the current range to the result
+        if not matched:
+            res.append(rng)
+
+    # Sort the result ranges
+    res.sort()
+
+    return res
+
+
+#seeds, maps = data
+ranges = []
+
+for i in range(0, len(seeds), 2):
+    start = seeds[i]
+    end = seeds[i] + seeds[i+1] - 1
+    ranges.append((start, end))
+k = 'seed'
+# The loop continues until 'k' is equal to 'location'
+while k != 'location':
+    # Iterate over each item in the 'maps' dictionary
+    for key, map in maps.items():
+        # Check if the first element of the key matches 'k'
+        if key[0] == k:
+            # Initialize an empty list to store the new ranges
+            new_range = []
+            # Iterate over each range in the current list of ranges
+            for item in ranges:
+                # Map the current range using the current map
+                # and add the resulting ranges to the new list
+                new_range.extend(map_range(item, map))
+            # Replace the current list of ranges with the new list
+            ranges = new_range
+            # Update 'k' to the second element of the key
+            k = key[1]
+            # Break out of the loop over the 'maps' dictionary
+            break
+
+print(min([result[0] for result in ranges]))
+
 
 
