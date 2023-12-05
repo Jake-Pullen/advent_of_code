@@ -101,9 +101,7 @@ def map_range(rng, map):
     return result_range
 
 
-#seeds, maps = data
 ranges = []
-
 for i in range(0, len(seeds), 2):
     start = seeds[i]
     end = seeds[i] + seeds[i+1] - 1
@@ -130,6 +128,3 @@ while k != 'location':
             break
 
 print(min([result[0] for result in ranges]))
-
-
-
