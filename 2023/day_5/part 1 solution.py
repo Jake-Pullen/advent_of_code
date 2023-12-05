@@ -1,4 +1,4 @@
-import os
+from collections import defaultdict
 
 with open(r'advent_of_code\2023\day_5\input.txt', 'r') as file:
     input = file.readlines()
@@ -45,13 +45,14 @@ def build_instructions_map(instructions, instructions_map):
                 instructions_map[source] = destination
 
 # build the seed to soil map using the instructions from the input
-seed_to_soil_map = {}
-soil_to_fertilizer_map = {}
-fertilizer_to_water_map = {}
-water_to_light_map = {}
-light_to_temperature_map = {}
-temperature_to_humidity_map = {}
-humidity_to_location_map = {}
+seed_to_soil_map = defaultdict(lambda: seed_to_soil_map)
+soil_to_fertilizer_map = defaultdict(lambda: soil_to_fertilizer_map)
+fertilizer_to_water_map = defaultdict(lambda: fertilizer_to_water_map)
+water_to_light_map = defaultdict(lambda: water_to_light_map)
+light_to_temperature_map = defaultdict(lambda: light_to_temperature_map)
+temperature_to_humidity_map = defaultdict(lambda: temperature_to_humidity_map)
+humidity_to_location_map = defaultdict(lambda: humidity_to_location_map)
+
 
 build_instructions_map(seed_to_soil_map_instructions, seed_to_soil_map)
 build_instructions_map(soil_to_fertilizer_map_instructions, soil_to_fertilizer_map)
@@ -64,13 +65,13 @@ build_instructions_map(humidity_to_location_map_instructions, humidity_to_locati
 locations = []
 # now we run the seed number through the maps 1 by 1 to get the final location
 for seed_number in seed_numbers:
-    soil = seed_to_soil_map.get(int(seed_number), int(seed_number))
-    fertilizer = soil_to_fertilizer_map.get(soil, soil)
-    water = fertilizer_to_water_map.get(fertilizer, fertilizer)
-    light = water_to_light_map.get(water, water)
-    temperature = light_to_temperature_map.get(light, light)
-    humidity = temperature_to_humidity_map.get(temperature, temperature)
-    location = humidity_to_location_map.get(humidity, humidity)
+    soil = seed_to_soil_map[int(seed_number)]
+    fertilizer = soil_to_fertilizer_map[soil]
+    water = fertilizer_to_water_map[fertilizer]
+    light = water_to_light_map[water]
+    temperature = light_to_temperature_map[light]
+    humidity = temperature_to_humidity_map[temperature]
+    location = humidity_to_location_map[humidity]
     locations.append(location)
 
 #print lowest location 
