@@ -8,6 +8,15 @@ with open(r'advent_of_code\2023\day_5\test_input.txt', 'r') as file:
 
 # print(input)
 
+# big fat read me note 
+# big fat read me note 
+# big fat read me note 
+# this has a VERY LONG run time due to looping through what is probably millions of numbers
+# JP to come back later and try to optimize this
+# big fat read me note 
+# big fat read me note 
+# big fat read me note 
+
 # find the seed numbers
 seed_numbers = input[0].split(':')[1].strip().split(' ')
 #print(seed_numbers)
@@ -64,8 +73,9 @@ for seed in seed_map:
         # Update smallest_location if a smaller location is found
         if location < smallest_location:
             smallest_location = location
+            print(smallest_location)
 
 # Print the smallest location
-print(smallest_location)
+print(f'answer: {smallest_location}')
 
 
