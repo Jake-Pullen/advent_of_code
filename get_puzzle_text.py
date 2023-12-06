@@ -1,5 +1,6 @@
 import os
 import requests
+from datetime import datetime
 
 def get_puzzle_text(year, day):
     url = f"https://adventofcode.com/{year}/day/{day}"
@@ -8,7 +9,8 @@ def get_puzzle_text(year, day):
     return response.text
 
 def get_puzzle_input(year, day):
-    session_cookie = ''
+    with open(r'advent_of_code/session_cookie.txt', 'r') as file:
+        session_cookie = file.read().strip()
     url = f"https://adventofcode.com/{year}/day/{day}/input"
     cookies = {'session': session_cookie}
     response = requests.get(url, cookies=cookies)
@@ -39,10 +41,25 @@ def save_puzzle_input(year, day):
 
 
 # Usage example
-year = 2022
-day = 7
-save_puzzle_text(year, day)
-save_puzzle_input(year, day)
+current_year = datetime.now().year
+current_day = datetime.now().day
+
+def populate_data(year = current_year, day=current_day):
+    """
+    Populates data for the Advent of Code puzzle.
+    requires a session cookie to be saved in advent_of_code/session_cookie.txt
+
+    Args:
+        year (int): The year of the Advent of Code puzzle. Defaults to the current year.
+        day (int): The day of the Advent of Code puzzle. Defaults to the current day.
+
+    Returns:
+        None
+    """
+    save_puzzle_text(year, day)
+    save_puzzle_input(year, day)
+
+populate_data()
 
 
 
