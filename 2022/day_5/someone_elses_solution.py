@@ -10,10 +10,10 @@
 
 def main():
     print("Advent of Code - Day 5")
-    file_task_1 = open(r'advent_of_code\2022\day_5\input.txt', 'r')
+    file_task_1 = open(r'advent_of_code\2022\day_5\test_input.txt', 'r')
     file_task_2 = open(r'advent_of_code\2022\day_5\input.txt', 'r')
     task_1(file_task_1)
-    task_2(file_task_2)
+    #task_2(file_task_2)
 
 
 def get_sections(file):
@@ -34,10 +34,13 @@ def get_sections(file):
 def task_1(file):
     # Iterate over instructions, get relevant values from it and move the creates
     instructions, levels, stacks = get_sections(file)
+    #print(stacks)
     for instruction in instructions:
         quantity, from_stack_order, to_stack_order = [int(i) for i in instruction.split(" ") if i.isnumeric()]
         while quantity != 0:
+            print(stacks)
             stacks[to_stack_order-1].append(stacks[from_stack_order - 1].pop())  # Move crates each after another
+            print(stacks)
             quantity -= 1
     print("Task 1 result: ", end="")
     [print(stack[-1], end="") for stack in stacks]

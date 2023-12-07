@@ -1,5 +1,7 @@
-with open(r'2022\day_5\input.txt', 'r') as file:
+with open(r'advent_of_code\2022\day_5\input.txt', 'r') as file:
     input = file.read()
+with open(r'advent_of_code\2022\day_5\test_input.txt', 'r') as file:
+    test_input = file.read()
 
 # print(input)
 
@@ -14,17 +16,8 @@ pile_map = {
     8: 29,
     9: 33
 }
-test_input = '''    [D]    
-[N] [C]    
-[Z] [M] [P]
- 1   2   3 
 
-move 1 from 2 to 1
-move 3 from 1 to 3
-move 2 from 2 to 1
-move 1 from 1 to 2'''
-
-# input = test_input
+input = test_input
 
 line_first_move = input.find('move')
 loading_area = input[:(line_first_move-2)]
@@ -54,8 +47,8 @@ def add_to_pile(value, pile_number, loading_area):
     loading_area = '\n'.join(''.join(line) for line in lines)
     return loading_area
 
-test = add_to_pile('X',3, loading_area)
-print(test)
+# test = add_to_pile('X',3, loading_area)
+# print(test)
 
 def move_box(from_pile, to_pile):
     # find the box on the top of the pile
