@@ -57,6 +57,6 @@ def populate_data(year = current_year, day=current_day):
         None
     """
     save_puzzle_text(year, day)
-    #save_puzzle_input(year, day)
+    save_puzzle_input(year, day)
 
 populate_data()
