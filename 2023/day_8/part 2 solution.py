@@ -1,4 +1,4 @@
-import os
+import math
 
 with open(r'advent_of_code\2023\day_8\input.txt', 'r') as file:
     input = file.read()
@@ -55,28 +55,30 @@ guide_dict = {}
 for i in range(0, len(guide)):
     guide_dict[guide[i][0]] = guide[i][1]
 
-print(guide_dict)
-
-# starting at 'AAA' we need to follow the instructions to get to the bottom of the tree
-# we need to follow the instructions until we get to ZZZ
-# if we run out of instructions before we get to ZZZ then we need to repeat the instructions from where we are
-# Convert the dictionary to a list
-
-
-# Perform the operation
-
 # Initialize current_nodes as a list of starting nodes
 current_nodes = [node for node in guide_dict.keys() if node.endswith('A')]
 
-step = 0
-while not all(node.endswith('Z') for node in current_nodes):
-    #print(current_nodes)
-    print(step)
-    # Use modulo to wrap step around if it's greater than the length of instructions
-    choose_items = int(instructions[step % len(instructions)])
-    # Update each node in the list
-    current_nodes = [guide_dict[node][choose_items] for node in current_nodes]
-    step += 1
+solve_steps = []
+# Perform the operation
+# for each start node we found that ends in A
+# we need to work out how many steps it takes to get to a node that ends in Z
+for current_node in current_nodes:
+    step = 0
+    #while current node does not end with z
+    while current_node:
+        # Use modulo to wrap step around if it's greater than the length of instructions
+        choose_items = int(instructions[step % len(instructions)])
+        next_node = guide_dict[current_node][choose_items]    
+        current_node = next_node
+        step += 1
+        if current_node.endswith('Z'):
+            break
+    solve_steps.append(step)
 
-print(f'finished in {step} steps, current nodes are {current_nodes}')
-print(current_nodes)
+print(solve_steps)
+# once we find out how many steps it takes to get to Z we need to find the lowest common denominator of all the steps
+lcm_value = solve_steps[0]
+for number in solve_steps[1:]:
+  lcm_value = lcm_value * number // math.gcd(lcm_value, number)
+
+print(lcm_value)
