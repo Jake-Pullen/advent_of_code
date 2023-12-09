@@ -52,7 +52,7 @@ def save_part_2_puzzle_text(year, day):
         existing_puzzle_text = file.read()
     # Check if part 2 has already been added
     if "part2" in existing_puzzle_text:
-        print("Part 2 has already been added. Skipping.")
+        print("There is nothing more to add... Idiot.")
         return
     puzzle_text = get_puzzle_text(year, day)
     puzzle_text = puzzle_text.split('<main>')[1]
