@@ -1,1 +1,0 @@
-# Day 25 Puzzle Text.
