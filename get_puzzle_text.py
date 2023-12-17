@@ -67,6 +67,7 @@ def save_part_2_puzzle_text(year, day):
 def get_puzzle_part(year, day):
     # Check if the puzzle text for the day equals "# Day {day} Puzzle Text."
     folder = rf"advent_of_code\{year}\day_{day}"
+    os.makedirs(folder, exist_ok=True)
     input_file = os.path.join(folder, "puzzle_text.md")
     # Create the file if it doesn't exist
     if not os.path.isfile(input_file):
@@ -79,6 +80,18 @@ def get_puzzle_part(year, day):
         return 1
     else:
         return 2
+
+def create_solution_file(year, day, part):
+    folder = rf"advent_of_code\{year}\day_{day}"
+    os.makedirs(folder, exist_ok=True)
+    solution_file = os.path.join(folder, f"part {part} solution.py")
+    input_file_path = os.path.join(folder, "input.txt")
+    with open(solution_file, "w") as file:
+        file.write(f"""with open(r'{input_file_path}', 'r') as file:
+    input = file.read()
+""")
+    print(f"Created {solution_file}")
+
 
 # Usage example
 current_year = datetime.now().year
@@ -105,9 +118,11 @@ def populate_data(year = current_year, day=current_day):
     if part_check == 1:
         save_puzzle_text(year, day)
         save_puzzle_input(year, day)
+        create_solution_file(year, day, part_check)
     elif part_check == 2:
         save_part_2_puzzle_text(year, day)
+        create_solution_file(year, day, part_check)
     else:
         print("Something went wrong. Check the puzzle text.")
 
-populate_data()
+populate_data(2022,6)
