@@ -27,9 +27,7 @@ def save_puzzle_text(year, day):
     os.makedirs(folder, exist_ok=True)
     input_file = os.path.join(folder, "puzzle_text.md")
     puzzle_text = get_puzzle_text(year, day)
-    # Remove everything before the puzzle text which is all the things inside the <main> tag
     puzzle_text = puzzle_text.split('<main>')[1]
-    # Remove everything after the puzzle text which is all the things after the </article> tag
     puzzle_text = puzzle_text.split('</article>')[0]
     print(f'Saving puzzle text to {input_file}')
     with open(input_file, "w") as file:
@@ -70,10 +68,14 @@ def get_puzzle_part(year, day):
     # Check if the puzzle text for the day equals "# Day {day} Puzzle Text."
     folder = rf"advent_of_code\{year}\day_{day}"
     input_file = os.path.join(folder, "puzzle_text.md")
+    # Create the file if it doesn't exist
+    if not os.path.isfile(input_file):
+        with open(input_file, "w") as file:
+            pass
     # grab the existing puzzle text
     with open(input_file, "r") as file:
         existing_puzzle_text = file.read()
-    if existing_puzzle_text == f"# Day {day} Puzzle Text.":
+    if not existing_puzzle_text: # == f"# Day {day} Puzzle Text.":
         return 1
     else:
         return 2
