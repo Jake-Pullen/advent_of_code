@@ -1,4 +1,6 @@
 session_cookie.txt
+puzzle_text.mk
+input.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
