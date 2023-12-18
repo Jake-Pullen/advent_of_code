@@ -86,11 +86,16 @@ def create_solution_file(year, day, part):
     os.makedirs(folder, exist_ok=True)
     solution_file = os.path.join(folder, f"part {part} solution.py")
     input_file_path = os.path.join(folder, "input.txt")
-    with open(solution_file, "w") as file:
-        file.write(f"""with open(r'{input_file_path}', 'r') as file:
+
+    # Check if the solution file already exists
+    if not os.path.exists(solution_file):
+        with open(solution_file, "w") as file:
+            file.write(f"""with open(r'{input_file_path}', 'r') as file:
     input = file.read()
 """)
-    print(f"Created {solution_file}")
+        print(f"Created {solution_file}")
+    else:
+        print(f"{solution_file} already exists. No action taken.")
 
 
 # Usage example
@@ -125,4 +130,4 @@ def populate_data(year = current_year, day=current_day):
     else:
         print("Something went wrong. Check the puzzle text.")
 
-populate_data(2023,1)
+populate_data(2023,17)
