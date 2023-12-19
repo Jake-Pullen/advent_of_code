@@ -130,4 +130,4 @@ def populate_data(year = current_year, day=current_day):
     else:
         print("Something went wrong. Check the puzzle text.")
 
-populate_data(2023,17)
+populate_data()
