@@ -3,7 +3,7 @@ import requests
 from datetime import datetime
 
 def get_puzzle_text(year, day):
-    with open(r'advent_of_code/session_cookie.txt', 'r') as file:
+    with open(r'session_cookie.txt', 'r') as file:
         session_cookie = file.read().strip()
     url = f"https://adventofcode.com/{year}/day/{day}"
     cookies = {'session': session_cookie}
@@ -12,7 +12,7 @@ def get_puzzle_text(year, day):
     return response.text
 
 def get_puzzle_input(year, day):
-    with open(r'advent_of_code/session_cookie.txt', 'r') as file:
+    with open(r'session_cookie.txt', 'r') as file:
         session_cookie = file.read().strip()
     url = f"https://adventofcode.com/{year}/day/{day}/input"
     cookies = {'session': session_cookie}
@@ -23,7 +23,7 @@ def get_puzzle_input(year, day):
     return puzzle_input
 
 def save_puzzle_text(year, day):
-    folder = rf"advent_of_code\{year}\{day:02}"
+    folder = rf"{year}/{day:02}"
     os.makedirs(folder, exist_ok=True)
     input_file = os.path.join(folder, "puzzle_text.md")
     puzzle_text = get_puzzle_text(year, day)
@@ -34,7 +34,7 @@ def save_puzzle_text(year, day):
         file.write(puzzle_text)
 
 def save_puzzle_input(year, day):
-    folder = rf"advent_of_code\{year}\{day:02}"
+    folder = rf"{year}/{day:02}"
     os.makedirs(folder, exist_ok=True)
     input_file = os.path.join(folder, "input.txt")
     puzzle_input = get_puzzle_input(year, day)
@@ -43,7 +43,7 @@ def save_puzzle_input(year, day):
         file.write(puzzle_input)
 
 def save_part_2_puzzle_text(year, day):
-    folder = rf"advent_of_code\{year}\{day:02}"
+    folder = rf"{year}/{day:02}"
     input_file = os.path.join(folder, "puzzle_text.md")
     # grab the existing puzzle text
     with open(input_file, "r") as file:
@@ -66,7 +66,7 @@ def save_part_2_puzzle_text(year, day):
 
 def get_puzzle_part(year, day):
     # Check if the puzzle text for the day equals "# Day {day} Puzzle Text."
-    folder = rf"advent_of_code\{year}\{day:02}"
+    folder = rf"{year}/{day:02}"
     os.makedirs(folder, exist_ok=True)
     input_file = os.path.join(folder, "puzzle_text.md")
     # Create the file if it doesn't exist
@@ -82,7 +82,7 @@ def get_puzzle_part(year, day):
         return 2
 
 def create_solution_file(year, day, part):
-    folder = rf"advent_of_code\{year}\{day:02}"
+    folder = rf"{year}/{day:02}"
     os.makedirs(folder, exist_ok=True)
     solution_file = os.path.join(folder, f"part {part} solution.py")
     input_file_path = os.path.join(folder, "input.txt")
@@ -105,7 +105,7 @@ current_day = datetime.now().day
 def populate_data(year = current_year, day=current_day):
     """
     Populates data for the Advent of Code puzzle.
-    Requires a session cookie to be saved in advent_of_code/session_cookie.txt
+    Requires a session cookie to be saved in session_cookie.txt
 
     This function checks if the puzzle text for the day equals "# Day {day} Puzzle Text."
     If it does, it saves the puzzle text and input for part 1.
