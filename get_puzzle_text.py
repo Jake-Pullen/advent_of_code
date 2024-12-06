@@ -90,8 +90,13 @@ def create_solution_file(year, day, part):
     # Check if the solution file already exists
     if not os.path.exists(solution_file):
         with open(solution_file, "w") as file:
-            file.write(f"""with open(r'{input_file_path}', 'r') as file:
-    input = file.read()
+            file.write(f"""testing = 1
+if not testing:
+    with open(r"{year}/{day:02}\input.txt", "r") as file:
+        input = file.read()
+else:
+    input = '''
+'''
 """)
         print(f"Created {solution_file}")
     else:
