@@ -84,15 +84,15 @@ def get_puzzle_part(year, day):
 def create_solution_file(year, day, part):
     folder = rf"{year}/{day:02}"
     os.makedirs(folder, exist_ok=True)
-    solution_file = os.path.join(folder, f"part {part} solution.py")
+    solution_file = os.path.join(folder, f"part_{part}_solution.py")
     input_file_path = os.path.join(folder, "input.txt")
 
     # Check if the solution file already exists
     if not os.path.exists(solution_file):
         with open(solution_file, "w") as file:
-            file.write(f"""testing = 1
+            file.write(f"""testing = True
 if not testing:
-    with open(r"{year}/{day:02}\input.txt", "r") as file:
+    with open(r"{year}/{day:02}/input.txt", "r") as file:
         input = file.read()
 else:
     input = '''
